@@ -9,8 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HelloWorldController extends AbstractController
 {
-    #[Route('/hello/{name}', name: 'app_hello_world')]
-    public function index(Request $request, $name): Response
+    #[Route('/hello/{name}', name: 'app_hello_world', requirements: ['name' => '[a-zA-Z]+'])]
+    public function index(Request $request, string $name = 'World'): Response
     {
 //        $name = $request->query->get('name', 'Le monde');
 

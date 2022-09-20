@@ -14,10 +14,8 @@ class HelloWorldController extends AbstractController
     {
 //        $name = $request->query->get('name', 'Le monde');
 
-        return new Response('Hello ' . $name . ' !');
-
-//        return $this->render('hello_world/index.html.twig', [
-//            'controller_name' => 'HelloWorldController',
-//        ]);
+        return $this->render('hello_world/index.html.twig', [
+            'name' => $name,
+        ]);
     }
 }

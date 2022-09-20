@@ -27,7 +27,7 @@ class MovieController extends AbstractController
         ]
     ];
 
-    #[Route('/movies/{id}', name: 'app_movies_index', requirements: ['id' => '\d+'])]
+    #[Route('/movies/{id}', name: 'app_movies_show', requirements: ['id' => '\d+'])]
     public function show(int $id): Response
     {
         if(!array_key_exists($id, self::MOVIES)){
@@ -36,6 +36,8 @@ class MovieController extends AbstractController
 
         $movie = self::MOVIES[$id];
 
-        return $this->json($movie);
+        return $this->render('movie/show.html.twig', [
+            'movie' => $movie
+        ]);
     }
 }

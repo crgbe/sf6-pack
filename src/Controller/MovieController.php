@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Movie;
+use App\Repository\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MovieController extends AbstractController
@@ -27,15 +28,19 @@ class MovieController extends AbstractController
         ]
     ];
 
-    #[Route('/movies/{id}', name: 'app_movies_show', requirements: ['id' => '\d+'])]
-    public function show(int $id): Response
+    #[Route('/movies', name: 'app_movies_index')]
+    public function index(MovieRepository $movieRepository): Response
     {
-        if(!array_key_exists($id, self::MOVIES)){
-            throw $this->createNotFoundException("Le film n'existe pas !");
-        }
+        $movies = $movieRepository->findAll();
 
-        $movie = self::MOVIES[$id];
+        return $this->render('movie/index.html.twig', [
+            'movies' => $movies
+        ]);
+    }
 
+    #[Route('/movies/{id}', name: 'app_movies_show', requirements: ['id' => '\d+'])]
+    public function show(Movie $movie): Response
+    {
         return $this->render('movie/show.html.twig', [
             'movie' => $movie
         ]);

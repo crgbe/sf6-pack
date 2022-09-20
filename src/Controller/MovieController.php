@@ -17,7 +17,7 @@ class MovieController extends AbstractController
         ],
         [
             'name' => 'Blackpanther',
-            'description' => "Un film incroyable de Marvel Studio qui met en scène un héro incroyable",
+            'description' => 'Un film incroyable de Marvel Studio qui met en scène un héro incroyable',
             'year' => 2013
         ],
         [

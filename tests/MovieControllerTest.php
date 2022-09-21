@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class MovieControllerTest extends WebTestCase
 {
-    public function setup(): void
+    public static function setupBeforeClass(): void
     {
         self::bootKernel();
         /** @var EntityManagerInterface $entityManager */
@@ -30,7 +30,7 @@ class MovieControllerTest extends WebTestCase
         $genreRepository->add($genreSuperHeros);
 
         $movie = (new Movie())
-            ->setName('Godfather')
+            ->setName('The Godfather')
             ->setDescription("Un film qui raconte la vie d'un jeune garçon élevé par un père mafieux et qui a voulu suivre un autre chemin")
             ->setYear(new \DateTime('2001-01-01'))
             ->setGenre($genreAction)
@@ -39,7 +39,7 @@ class MovieControllerTest extends WebTestCase
 
 
         $movie = (new Movie())
-            ->setName('Blackpanther')
+            ->setName('Black panther')
             ->setDescription("Un film incroyable de Marvel Studio qui met en scène un héro incroyable")
             ->setYear((new \DateTime('2013-01-01')))
             ->setGenre($genreAction)
@@ -47,7 +47,7 @@ class MovieControllerTest extends WebTestCase
         $movieRepository->add($movie);
 
         $movie = (new Movie())
-            ->setName('Lord of rings')
+            ->setName('The Lord of the Rings')
             ->setDescription("Le seigneur des anneaux")
             ->setYear(new \DateTime('2000-01-01'))
             ->setGenre($genreSuperHeros)
@@ -63,7 +63,7 @@ class MovieControllerTest extends WebTestCase
         $client->request('GET', '/movies/2');
 
         $this->assertResponseIsSuccessful();
-        $this->assertStringContainsString('Blackpanther', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Black panther', $client->getResponse()->getContent());
         $this->assertStringContainsString('Un film incroyable de Marvel Studio qui met en scène un héro incroyable', $client->getResponse()->getContent());
         $this->assertStringContainsString('2013', $client->getResponse()->getContent());
     }

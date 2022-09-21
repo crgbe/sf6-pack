@@ -20,6 +20,10 @@
             <td>Year</td>
             <td>{{ movie.year|date('Y') }}</td>
         </tr>
+        <tr>
+            <td>Poster</td>
+            <td><img src="{{ moviePosterLink }}" alt="Poster du film"/></td>
+        </tr>
         </tbody>
     </table>
 {% endblock %}

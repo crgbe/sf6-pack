@@ -10,19 +10,17 @@ class HelloWorldControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $client->request('GET', '/hello/Adrien');
-        $content = $client->getResponse()->getContent();
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame('Hello Adrien !', $content);
+        $this->assertSelectorTextContains('body', 'Hello Adrien !');
     }
 
     public function testHelloWithNothingReturnsHelloWorld(): void
     {
         $client = static::createClient();
         $client->request('GET', '/hello');
-        $content = $client->getResponse()->getContent();
 
         $this->assertResponseIsSuccessful();
-        $this->assertSame('Hello World !', $content);
+        $this->assertSelectorTextContains('body', 'Hello World !');
     }
 }

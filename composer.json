@@ -85,6 +85,15 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "phpunit": [
+            "@reset-database",
+            "php bin/phpunit"
+        ],
+        "reset-database": [
+            "rm -rf ./var/sf6-pack.db",
+            "symfony console doctrine:database:create",
+            "symfony console doctrine:schema:create"
         ]
     },
     "conflict": {

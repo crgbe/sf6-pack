@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Create a new movie
+
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/movies/new.js') }}"></script>
+{% endblock javascripts %}
+
+{% block body %}
+    {{ form_start(newForm) }}
+        {{ form_row(newForm.name) }}
+        {{ form_row(newForm.description) }}
+        {{ form_row(newForm.year, {
+            'attr': {
+                'class' : 'js-datepicker'
+            }
+        }) }}
+        {{ form_row(newForm.genre) }}
+
+        <button class="btn btn-primary">create</button>
+    {{ form_end(newForm) }}
+{% endblock %}
+

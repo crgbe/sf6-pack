@@ -3,31 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Form\MovieType;
 use App\Repository\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MovieController extends AbstractController
 {
-    const MOVIES = [
-        [
-            'name' => 'Godfather',
-            'description' => "Un film qui raconte la vie d'un jeune garçon élevé par un père mafieux et qui a voulu suivre un autre chemin",
-            'year' => 2001
-        ],
-        [
-            'name' => 'Blackpanther',
-            'description' => 'Un film incroyable de Marvel Studio qui met en scène un héro incroyable',
-            'year' => 2013
-        ],
-        [
-            'name' => 'Lord of rings',
-            'description' => "Le seigneur des anneaux",
-            'year' => 2000
-        ]
-    ];
-
     #[Route('/movies', name: 'app_movies_index')]
     public function index(MovieRepository $movieRepository): Response
     {
@@ -45,4 +29,26 @@ class MovieController extends AbstractController
             'movie' => $movie
         ]);
     }
+
+    #[Route('/movies/new', name: 'app_movies_new')]
+    public function new(Request $request, MovieRepository $movieRepository): Response
+    {
+        $newForm = $this->createForm(MovieType::class);
+
+        $newForm->handleRequest($request);
+
+        if($newForm->isSubmitted() && $newForm->isValid()){
+            $movie = $newForm->getData();
+            $movieRepository->add($movie, true);
+
+            $this->addFlash('success', 'The movie "'. $movie->getName() .'" has been created' );
+
+            return $this->redirectToRoute('app_movies_index');
+        }
+
+        return $this->render('movie/new.html.twig', [
+            'newForm' => $newForm->createView()
+        ]);
+    }
+
 }

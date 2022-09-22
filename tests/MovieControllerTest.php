@@ -31,12 +31,12 @@ class MovieControllerTest extends WebTestCase
     public function testItShowAMovie(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/movies/2');
+        $client->request('GET', '/movies/5');
 
         $this->assertResponseIsSuccessful();
-        $this->assertStringContainsString('Black panther', $client->getResponse()->getContent());
-        $this->assertStringContainsString('Un film incroyable de Marvel Studio qui met en scène un héro incroyable', $client->getResponse()->getContent());
-        $this->assertStringContainsString('2013', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Jurassic Park', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Le film de dinozaures', $client->getResponse()->getContent());
+        $this->assertStringContainsString('1999', $client->getResponse()->getContent());
     }
 
     public function testItThrows404ErrorWhenMovieNotFound(): void

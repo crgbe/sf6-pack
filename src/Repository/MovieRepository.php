@@ -21,6 +21,18 @@ class MovieRepository extends ServiceEntityRepository
         parent::__construct($registry, Movie::class);
     }
 
+
+    /**
+     * @return Movie[]
+     */
+    public function findEmptyDescriptions(): array
+    {
+        return $this->createQueryBuilder('m')->andWhere('m.description IS NULL')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function add(Movie $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

@@ -6,6 +6,8 @@ use App\Entity\Movie;
 use App\Form\MovieType;
 use App\Repository\MovieRepository;
 use App\Service\OmdbGateway;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,6 +45,7 @@ class MovieController extends AbstractController
     }
 
     #[Route('/movies/new', name: 'app_movies_new')]
+    #[IsGranted('ROLE_USER')]
     public function new(Request $request, MovieRepository $movieRepository): Response
     {
         $newForm = $this->createForm(MovieType::class);
@@ -50,7 +53,9 @@ class MovieController extends AbstractController
         $newForm->handleRequest($request);
 
         if($newForm->isSubmitted() && $newForm->isValid()){
+            /** @var Movie $movie */
             $movie = $newForm->getData();
+            $movie->setCreatedBy($this->getUser());
             $movieRepository->add($movie, true);
 
             $this->addFlash('success', 'The movie "'. $movie->getName() .'" has been created' );
@@ -63,4 +68,14 @@ class MovieController extends AbstractController
         ]);
     }
 
+    #[Route('/movies/delete/{id}', name: 'app_movies_delete', requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('can_delete', 'movie')]
+    public function delete(Movie $movie, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($movie);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_movies_index');
+    }
 }
